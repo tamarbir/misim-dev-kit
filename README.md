@@ -4,19 +4,25 @@
 
 ## סטאק
 
+- צד לקוח: Angular 20 (standalone, signals, Reactive Forms, zoneless)
 - צד שרת: ASP.NET Core 8 Web API
 - שמירת נתונים: מאגר בזיכרון (בלי מסד נתונים בשלב זה)
-- צד לקוח: Angular — יתווסף אחרי שה-API יציב
 
-## הרצה מקומית
+## הרצה
 
-דרישות: .NET 8 SDK.
+שני תהליכים:
 
 ```bash
 cd backend/HrForms.Api
 dotnet run --urls http://localhost:43142
 ```
 
+```bash
+cd frontend
+npm start
+```
+
+הממשק: http://localhost:43143  
 Swagger: http://localhost:43142/swagger
 
 הנתונים נמחקים כשעוצרים את השרת.

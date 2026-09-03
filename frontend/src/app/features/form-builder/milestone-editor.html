@@ -1,0 +1,44 @@
+<section class="panel">
+  <header class="panel-head">
+    <div>
+      <h2>מסלול אישורים</h2>
+      <p>כל אבן דרך: שם שלב, זהות מאשר, וסוג הפעולה המותרת.</p>
+    </div>
+    <button type="button" class="ghost" (click)="add.emit()">הוסף אבן דרך</button>
+  </header>
+
+  @if (steps().length === 0) {
+    <p class="empty">עדיין אין שלבים. הוסיפי לפחות אבן דרך אחת לפני שמירה.</p>
+  } @else {
+    <ol class="stack">
+      @for (step of steps().controls; track $index) {
+        <li [formGroup]="step">
+          <span class="order">{{ $index + 1 }}</span>
+          <label>
+            שם השלב
+            <input type="text" formControlName="name" />
+            @if (step.controls.name.invalid && step.controls.name.touched) {
+              <small>חובה למלא שם שלב.</small>
+            }
+          </label>
+          <label>
+            זהות המאשר
+            <input type="text" formControlName="approverIdentity" placeholder="מספר עובד / שם" />
+            @if (step.controls.approverIdentity.invalid && step.controls.approverIdentity.touched) {
+              <small>חובה לציין מי המאשר.</small>
+            }
+          </label>
+          <label>
+            סוג פעולה
+            <select formControlName="actionType">
+              @for (action of actions; track action) {
+                <option [value]="action">{{ actionLabel[action] }}</option>
+              }
+            </select>
+          </label>
+          <button type="button" class="link danger" (click)="remove.emit($index)">הסרה</button>
+        </li>
+      }
+    </ol>
+  }
+</section>

@@ -1,0 +1,45 @@
+<aside class="panel">
+  <header>
+    <h2>טפסים שנשמרו</h2>
+    <p>הרשימה מגיעה מ-GET, והפירוט מ-GET לפי מזהה.</p>
+  </header>
+
+  @if (loadingList()) {
+    <p class="muted">טוען רשימה...</p>
+  } @else if (templates().length === 0) {
+    <p class="muted">עדיין לא נשמר טופס. אחרי שמירה הוא יופיע כאן.</p>
+  } @else {
+    <ul>
+      @for (item of templates(); track item.id) {
+        <li>
+          <button type="button" [class.active]="selected()?.id === item.id" (click)="selectId.emit(item.id)">
+            <strong>{{ item.name }}</strong>
+            <span>{{ item.fieldCount }} שדות · {{ item.stepCount }} שלבים</span>
+            <time>{{ item.createdAt | date: 'short' }}</time>
+          </button>
+        </li>
+      }
+    </ul>
+  }
+
+  @if (loadingDetails()) {
+    <p class="muted">טוען פירוט...</p>
+  } @else if (selected(); as template) {
+    <article>
+      <h3>{{ template.name }}</h3>
+      <p class="muted">נוצר על ידי {{ template.createdBy }}</p>
+      <h4>שדות</h4>
+      <ol>
+        @for (field of template.fields; track field.id) {
+          <li>{{ field.label }} ({{ fieldLabel[field.fieldType] }})</li>
+        }
+      </ol>
+      <h4>אבני דרך</h4>
+      <ol>
+        @for (step of template.steps; track step.id) {
+          <li>{{ step.name }} — {{ step.approverIdentity }} — {{ actionLabel[step.actionType] }}</li>
+        }
+      </ol>
+    </article>
+  }
+</aside>

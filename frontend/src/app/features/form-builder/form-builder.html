@@ -1,0 +1,66 @@
+<div class="page">
+  <header class="hero">
+    <p class="eyebrow">מחלקת הון אנושי</p>
+    <h1>יצירת טופס חדש</h1>
+    <p>מגדירים שם, שדות דינמיים ומסלול אישורים — ונשמרים בשרת בשלמותם.</p>
+  </header>
+
+  <div class="layout">
+    <form class="main" [formGroup]="form" (ngSubmit)="save()">
+      @if (state.error(); as message) {
+        <p class="banner danger" role="alert">{{ message }}</p>
+      }
+      @if (state.success(); as message) {
+        <p class="banner ok">{{ message }}</p>
+      }
+
+      <section class="panel">
+        <h2>פרטי הטופס</h2>
+        <div class="grid">
+          <label>
+            שם הטופס
+            <input type="text" formControlName="name" placeholder="לדוגמה: בקשת חופשה" />
+            @if (form.controls.name.invalid && form.controls.name.touched) {
+              <small>שם הטופס הוא שדה חובה.</small>
+            }
+          </label>
+          <label>
+            יוצר הטופס
+            <input type="text" formControlName="createdBy" placeholder="אופציונלי" />
+          </label>
+        </div>
+      </section>
+
+      <app-field-editor
+        [fields]="form.controls.fields"
+        (addText)="addField('Text')"
+        (addDate)="addField('Date')"
+        (remove)="removeField($event)"
+      />
+
+      <app-milestone-editor
+        [steps]="form.controls.steps"
+        (add)="addStep()"
+        (remove)="removeStep($event)"
+      />
+
+      <div class="submit-row">
+        <button type="submit" class="primary" [disabled]="state.saving()">
+          @if (state.saving()) {
+            שומר...
+          } @else {
+            שמור טופס בשלמותו
+          }
+        </button>
+      </div>
+    </form>
+
+    <app-template-list
+      [templates]="state.templates()"
+      [selected]="state.selected()"
+      [loadingList]="state.loadingList()"
+      [loadingDetails]="state.loadingDetails()"
+      (selectId)="state.select($event)"
+    />
+  </div>
+</div>

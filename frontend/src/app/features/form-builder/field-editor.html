@@ -1,0 +1,36 @@
+<section class="panel">
+  <header class="panel-head">
+    <div>
+      <h2>בונה השדות</h2>
+      <p>הוספה בלחיצה. כל שדה הוא קבוצה בתוך FormArray — לא HTML גולמי.</p>
+    </div>
+    <div class="actions">
+      <button type="button" class="ghost" (click)="addText.emit()">הוסף שדה טקסט</button>
+      <button type="button" class="ghost" (click)="addDate.emit()">הוסף שדה תאריך</button>
+    </div>
+  </header>
+
+  @if (fields().length === 0) {
+    <p class="empty">עדיין אין שדות. התחילי משדה טקסט או תאריך.</p>
+  } @else {
+    <ol class="stack">
+      @for (field of fields().controls; track $index) {
+        <li [formGroup]="field">
+          <span class="badge">{{ typeLabel[field.controls.fieldType.value] }}</span>
+          <label>
+            תווית
+            <input type="text" formControlName="label" />
+            @if (field.controls.label.invalid && field.controls.label.touched) {
+              <small>חובה למלא תווית.</small>
+            }
+          </label>
+          <label class="check">
+            <input type="checkbox" formControlName="isRequired" />
+            שדה חובה
+          </label>
+          <button type="button" class="link danger" (click)="remove.emit($index)">הסרה</button>
+        </li>
+      }
+    </ol>
+  }
+</section>
