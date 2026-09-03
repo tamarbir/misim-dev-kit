@@ -1,0 +1,17 @@
+# Build
+**/bin/
+**/obj/
+**/dist/
+**/.angular/
+**/node_modules/
+*.user
+*.suo
+*.db
+*.db-shm
+*.db-wal
+.DS_Store
+.idea/
+.vs/
+coverage/
+TestResults/
+*.log

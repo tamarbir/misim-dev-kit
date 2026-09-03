@@ -1,0 +1,94 @@
+@if (form(); as current) {
+  <section class="toolbar">
+    <div>
+      <h1>{{ current.name }}</h1>
+      <p class="muted">{{ current.description }}</p>
+    </div>
+    <a class="btn" [routerLink]="['/forms', current.id, 'edit']">עריכת תבנית</a>
+  </section>
+
+  @if (current.status !== 'Published') {
+    <p class="alert">הטופס עדיין בטיוטה. יש לפרסם אותו לפני הגשה.</p>
+  }
+
+  @if (error()) {
+    <p class="alert">{{ error() }}</p>
+  }
+  @if (success()) {
+    <p class="success">{{ success() }}</p>
+  }
+
+  @if (fillForm(); as group) {
+    <form class="fill" [formGroup]="group" (ngSubmit)="submit()">
+      <label>
+        שם המגיש
+        <input [value]="submitterName()" (input)="submitterName.set($any($event.target).value)" placeholder="אופציונלי" />
+      </label>
+
+      @for (field of fields(); track field.key) {
+        <label [class.invalid]="control(field.key)?.invalid && control(field.key)?.touched">
+          <span>
+            {{ field.label }}
+            @if (field.required) {
+              <em>*</em>
+            }
+          </span>
+
+          @switch (field.type) {
+            @case ('TextArea') {
+              <textarea [formControlName]="field.key" [placeholder]="field.placeholder || ''" rows="4"></textarea>
+            }
+            @case ('Select') {
+              <select [formControlName]="field.key">
+                <option value="">בחירה</option>
+                @for (option of field.options || []; track option) {
+                  <option [value]="option">{{ option }}</option>
+                }
+              </select>
+            }
+            @case ('Radio') {
+              <div class="options">
+                @for (option of field.options || []; track option) {
+                  <label class="inline">
+                    <input type="radio" [formControlName]="field.key" [value]="option" />
+                    {{ option }}
+                  </label>
+                }
+              </div>
+            }
+            @case ('Checkbox') {
+              <span class="inline">
+                <input type="checkbox" [formControlName]="field.key" />
+                {{ field.helpText || 'סימון' }}
+              </span>
+            }
+            @case ('Number') {
+              <input type="number" [formControlName]="field.key" [placeholder]="field.placeholder || ''" />
+            }
+            @case ('Date') {
+              <input type="date" [formControlName]="field.key" />
+            }
+            @case ('Email') {
+              <input type="email" [formControlName]="field.key" [placeholder]="field.placeholder || ''" />
+            }
+            @default {
+              <input type="text" [formControlName]="field.key" [placeholder]="field.placeholder || ''" />
+            }
+          }
+
+          @if (field.helpText && field.type !== 'Checkbox') {
+            <small>{{ field.helpText }}</small>
+          }
+        </label>
+      }
+
+      <button class="btn primary" type="submit" [disabled]="submitting() || current.status !== 'Published'">
+        שליחה
+      </button>
+    </form>
+  }
+} @else if (error()) {
+  <p class="alert">{{ error() }}</p>
+} @else {
+  <p class="muted">טוען טופס...</p>
+}

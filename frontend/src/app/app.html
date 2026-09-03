@@ -1,0 +1,16 @@
+<header class="topbar">
+  <a routerLink="/" class="brand">
+    <span class="brand-mark">מס</span>
+    <span>
+      <strong>Misim Dev Kit</strong>
+      <small>ערכת בניית טפסים</small>
+    </span>
+  </a>
+  <nav>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">כל הטפסים</a>
+    <a routerLink="/forms/new" routerLinkActive="active">טופס חדש</a>
+  </nav>
+</header>
+<main class="page">
+  <router-outlet />
+</main>

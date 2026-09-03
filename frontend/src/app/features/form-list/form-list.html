@@ -1,0 +1,42 @@
+<section class="hero">
+  <div>
+    <h1>מטלת בניית הטפסים</h1>
+    <p>
+      בונים תבניות טפסים דינמיות, מפרסמים אותן וממלאים הגשות — Angular 20 בצד הלקוח ו-.NET 8 בצד השרת.
+    </p>
+  </div>
+  <a class="btn primary" routerLink="/forms/new">טופס חדש</a>
+</section>
+
+@if (loading()) {
+  <p class="muted">טוען טפסים...</p>
+} @else if (error()) {
+  <p class="alert">{{ error() }}</p>
+} @else if (forms().length === 0) {
+  <p class="muted">עדיין אין טפסים. צרו את הטופס הראשון.</p>
+} @else {
+  <div class="cards">
+    @for (form of forms(); track form.id) {
+      <article class="card">
+        <header>
+          <h2>{{ form.name }}</h2>
+          <span class="badge" [class.published]="form.status === 'Published'">
+            {{ form.status === 'Published' ? 'פורסם' : 'טיוטה' }}
+          </span>
+        </header>
+        <p>{{ form.description || 'אין תיאור' }}</p>
+        <ul class="meta">
+          <li>{{ form.fieldCount }} שדות</li>
+          <li>{{ form.submissionCount }} הגשות</li>
+          <li>עודכן {{ form.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</li>
+        </ul>
+        <footer>
+          <a class="btn" [routerLink]="['/forms', form.id, 'edit']">עריכה</a>
+          <a class="btn" [routerLink]="['/forms', form.id, 'fill']">מילוי</a>
+          <a class="btn" [routerLink]="['/forms', form.id, 'submissions']">הגשות</a>
+          <button class="btn danger" type="button" (click)="remove(form)">מחיקה</button>
+        </footer>
+      </article>
+    }
+  </div>
+}

@@ -1,0 +1,36 @@
+@if (form(); as current) {
+  <section class="toolbar">
+    <div>
+      <h1>הגשות: {{ current.name }}</h1>
+      <p class="muted">{{ submissions().length }} הגשות נשמרו לטופס זה.</p>
+    </div>
+    <a class="btn" [routerLink]="['/forms', current.id, 'fill']">מילוי טופס</a>
+  </section>
+}
+
+@if (error()) {
+  <p class="alert">{{ error() }}</p>
+}
+
+@if (submissions().length === 0) {
+  <p class="muted">אין הגשות עדיין.</p>
+} @else {
+  <table>
+    <thead>
+      <tr>
+        <th>מגיש</th>
+        <th>תאריך</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of submissions(); track item.id) {
+        <tr>
+          <td>{{ item.submitterName || 'לא צוין' }}</td>
+          <td>{{ item.submittedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <td><a [routerLink]="['/submissions', item.id]">פירוט</a></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

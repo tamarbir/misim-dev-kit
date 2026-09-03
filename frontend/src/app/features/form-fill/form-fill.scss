@@ -1,0 +1,36 @@
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.fill {
+  max-width: 640px;
+  display: grid;
+  gap: 0.9rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1.1rem;
+}
+
+.options {
+  display: grid;
+  gap: 0.35rem;
+}
+
+label.invalid input,
+label.invalid textarea,
+label.invalid select {
+  border-color: #b42318;
+}
+
+small {
+  color: var(--muted);
+}
+
+em {
+  color: #b42318;
+  font-style: normal;
+}

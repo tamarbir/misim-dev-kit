@@ -1,0 +1,129 @@
+:root {
+  --gov-blue: #1c4c8c;
+  --gov-blue-dark: #12325d;
+  --gov-gold: #d4b17a;
+  --muted: #5b6b82;
+  --border: #d9e1ee;
+  --bg: #f4f7fb;
+  font-family: Assistant, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: #152238;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 0.35rem;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+label.inline {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 500;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  padding: 0.55rem 0.7rem;
+  background: #fff;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--gov-blue-dark);
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: var(--gov-blue);
+  border-color: var(--gov-blue);
+  color: #fff;
+}
+
+.btn.danger {
+  color: #b42318;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.alert,
+.success {
+  padding: 0.75rem 1rem;
+  border-radius: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.alert {
+  background: #fdecec;
+  color: #8a1c13;
+}
+
+.success {
+  background: #e8f6ee;
+  color: #0f6a38;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.badge {
+  background: #eceff5;
+  color: #44516a;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+.badge.published {
+  background: #e5f6ec;
+  color: #0f6a38;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px rgb(18 50 93 / 18%);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.4;
+}

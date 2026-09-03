@@ -1,0 +1,25 @@
+@if (submission(); as current) {
+  <section class="toolbar">
+    <div>
+      <h1>הגשה ל{{ current.formName }}</h1>
+      <p class="muted">
+        {{ current.submitterName || 'לא צוין מגיש' }} ·
+        {{ current.submittedAt | date: 'dd/MM/yyyy HH:mm' }}
+      </p>
+    </div>
+    <a class="btn" [routerLink]="['/forms', current.formId, 'submissions']">חזרה להגשות</a>
+  </section>
+
+  <dl>
+    @for (field of current.fields; track field.key) {
+      <div>
+        <dt>{{ field.label }}</dt>
+        <dd>{{ displayValue(field) }}</dd>
+      </div>
+    }
+  </dl>
+} @else if (error()) {
+  <p class="alert">{{ error() }}</p>
+} @else {
+  <p class="muted">טוען הגשה...</p>
+}

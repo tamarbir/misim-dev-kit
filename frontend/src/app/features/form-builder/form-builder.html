@@ -1,0 +1,136 @@
+<section class="toolbar">
+  <div>
+    <h1>{{ isNew() ? 'טופס חדש' : 'עריכת טופס' }}</h1>
+    <p class="muted">
+      סטטוס:
+      <strong>{{ status() === 'Published' ? 'פורסם' : 'טיוטה' }}</strong>
+    </p>
+  </div>
+  <div class="actions">
+    <a class="btn" routerLink="/">חזרה</a>
+    <button class="btn" type="button" [disabled]="saving()" (click)="save(false)">שמירה</button>
+    @if (status() === 'Published') {
+      <button class="btn" type="button" (click)="unpublish()">החזרה לטיוטה</button>
+    } @else {
+      <button class="btn primary" type="button" [disabled]="saving()" (click)="save(true)">שמירה ופרסום</button>
+    }
+  </div>
+</section>
+
+@if (error()) {
+  <p class="alert">{{ error() }}</p>
+}
+@if (message()) {
+  <p class="success">{{ message() }}</p>
+}
+
+<section class="meta-card" [formGroup]="meta">
+  <label>
+    שם הטופס
+    <input formControlName="name" placeholder="לדוגמה: דיווח הכנסה" />
+  </label>
+  <label>
+    תיאור
+    <textarea formControlName="description" rows="2" placeholder="מה המטרה של הטופס?"></textarea>
+  </label>
+</section>
+
+<div class="builder">
+  <aside>
+    <h2>סוגי שדות</h2>
+    <div class="palette">
+      @for (item of fieldTypes; track item.type) {
+        <button type="button" (click)="addField(item.type)">
+          <strong>{{ item.label }}</strong>
+          <span>{{ item.hint }}</span>
+        </button>
+      }
+    </div>
+  </aside>
+
+  <section>
+    <h2>שדות הטופס</h2>
+    @if (fields().length === 0) {
+      <p class="muted">בחרו סוג שדה מהרשימה כדי להתחיל.</p>
+    } @else {
+      <div cdkDropList class="field-list" (cdkDropListDropped)="drop($event)">
+        @for (field of fields(); track field.key + $index; let i = $index) {
+          <button
+            type="button"
+            class="field-item"
+            cdkDrag
+            [class.selected]="i === selectedIndex()"
+            (click)="selectField(i)"
+          >
+            <span class="handle" cdkDragHandle>⋮⋮</span>
+            <span>
+              <strong>{{ field.label || 'שדה ללא שם' }}</strong>
+              <small>{{ field.key }} · {{ field.type }}</small>
+            </span>
+          </button>
+        }
+      </div>
+    }
+  </section>
+
+  <section>
+    <h2>מאפייני שדה</h2>
+    @if (!selectedField()) {
+      <p class="muted">אין שדה נבחר.</p>
+    } @else {
+      <form class="props" [formGroup]="fieldForm">
+        <label>
+          תווית
+          <input formControlName="label" />
+        </label>
+        <label>
+          מפתח (באנגלית)
+          <input formControlName="key" />
+        </label>
+        <label>
+          סוג
+          <select formControlName="type">
+            @for (item of fieldTypes; track item.type) {
+              <option [value]="item.type">{{ item.label }}</option>
+            }
+          </select>
+        </label>
+        <label class="inline">
+          <input type="checkbox" formControlName="required" />
+          שדה חובה
+        </label>
+        <label>
+          Placeholder
+          <input formControlName="placeholder" />
+        </label>
+        <label>
+          טקסט עזרה
+          <input formControlName="helpText" />
+        </label>
+        @if (needsOptions()) {
+          <label>
+            אפשרויות (שורה לכל אפשרות)
+            <textarea formControlName="optionsText" rows="4"></textarea>
+          </label>
+        }
+        @if (fieldForm.controls.type.value === 'Number') {
+          <div class="row">
+            <label>מינימום <input type="number" formControlName="min" /></label>
+            <label>מקסימום <input type="number" formControlName="max" /></label>
+          </div>
+        }
+        @if (fieldForm.controls.type.value === 'Text' || fieldForm.controls.type.value === 'TextArea' || fieldForm.controls.type.value === 'Email') {
+          <div class="row">
+            <label>אורך מינ׳ <input type="number" formControlName="minLength" /></label>
+            <label>אורך מקס׳ <input type="number" formControlName="maxLength" /></label>
+          </div>
+          <label>
+            תבנית Regex
+            <input formControlName="pattern" placeholder="לדוגמה: ^\d{9}$" />
+          </label>
+        }
+        <button class="btn danger" type="button" (click)="removeSelected()">מחיקת שדה</button>
+      </form>
+    }
+  </section>
+</div>
